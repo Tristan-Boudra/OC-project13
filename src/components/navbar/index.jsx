@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
-  const isUserPage = location.pathname === "/user";
+  const isUserPage = location.pathname === "/profile";
 
   return (
     <nav className="main-nav">

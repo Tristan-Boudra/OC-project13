@@ -291,3 +291,41 @@ body {
     width: 200px;
   }
 }
+
+.profile-welcome {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.profile-button {
+  width: 300px;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #00bc77;
+  background-color: #00bc77;
+  color: #fff;
+}
+
+.profile-cancel-button {
+  width: 300px;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #e02900;
+  background-color: #e02900;
+  color: #fff;
+}
+
+.profile-edit-zone {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.main-balance {
+  margin-top: 30px;
+}
