@@ -20,6 +20,16 @@ export const apiSlice = createApi({
         },
       }),
     }),
+    updateUserProfile: builder.mutation({
+      query: (body) => ({
+        url: "/user/profile",
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body,
+      }),
+    }),
   }),
 });
 

@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetUserProfileMutation } from "../../slices/apiSlice";
+import {
+  useGetUserProfileMutation,
+  useUpdateUserProfileMutation,
+} from "../../slices/apiSlice";
 import {
   setId,
   setEmail,
@@ -13,8 +16,44 @@ import "../../styles/index.css";
 const User = () => {
   const dispatch = useDispatch();
   const [getUserProfile] = useGetUserProfileMutation();
+  const [updateUserProfile] = useUpdateUserProfileMutation();
   const firstName = useSelector((state) => state.profile.firstName);
   const lastName = useSelector((state) => state.profile.lastName);
+  const [editMode, setEditMode] = useState(false);
+
+  const startEdit = () => {
+    setEditMode(true);
+  };
+
+  const cancelEdit = () => {
+    setEditMode(false);
+  };
+
+  const saveEdit = () => {
+    const firstNameInput = document.getElementById("firstNameInput");
+    const lastNameInput = document.getElementById("lastNameInput");
+
+    const newFirstName =
+      firstNameInput.value.trim() !== "" ? firstNameInput.value : firstName;
+    const newLastName =
+      lastNameInput.value.trim() !== "" ? lastNameInput.value : lastName;
+
+    const body = {
+      firstName: newFirstName,
+      lastName: newLastName,
+    };
+
+    updateUserProfile(body)
+      .unwrap()
+      .then((data) => {
+        dispatch(setFirstName(data.body.firstName));
+        dispatch(setLastName(data.body.lastName));
+        setEditMode(false);
+      })
+      .catch((error) => {
+        console.error("User profile update failed: ", error);
+      });
+  };
 
   useEffect(() => {
     getUserProfile()
@@ -25,20 +64,58 @@ const User = () => {
         dispatch(setFirstName(data.body.firstName));
         dispatch(setLastName(data.body.lastName));
       })
-      .catch((error) => {
-        console.error("User profile fetch failed: ", error);
+      .catch(() => {
+        window.location.href = "/error";
       });
   }, [dispatch, getUserProfile]);
+
   return (
     <>
       <main className="main bg-dark">
-        <div className="profile-header">
-          <p className="profile-welcome">Welcome back</p>
-          <p className="profile-welcome">
-            {firstName} {lastName}!
-          </p>
-          <button className="profile-button">Edit Name</button>
-        </div>
+        {editMode ? (
+          <div className="profile-header">
+            <p className="profile-welcome">Welcome back</p>
+            <div className="profile-edit">
+              <div className="profile-edit-zone">
+                <input
+                  className="profile-edit-input"
+                  type="text"
+                  id="firstNameInput"
+                  name="firstNameInput"
+                  placeholder={firstName}
+                />
+                <input
+                  className="profile-edit-input"
+                  type="text"
+                  id="lastNameInput"
+                  name="lastNameInput"
+                  placeholder={lastName}
+                />
+              </div>
+              <div className="profile-edit-zone">
+                <button className="profile-button save" onClick={saveEdit}>
+                  Save
+                </button>
+                <button
+                  className="profile-cancel-button cancel"
+                  onClick={cancelEdit}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="profile-header">
+            <p className="profile-welcome">Welcome back</p>
+            <p className="profile-welcome">
+              {firstName} {lastName}!
+            </p>
+            <button className="profile-button" onClick={startEdit}>
+              Edit Name
+            </button>
+          </div>
+        )}
         <div className="main-balance">
           <h2 className="sr-only">Accounts</h2>
           <Transaction

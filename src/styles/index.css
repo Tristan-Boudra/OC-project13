@@ -299,7 +299,7 @@ body {
 }
 
 .profile-button {
-  width: 300px;
+  width: 150px;
   padding: 8px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -310,7 +310,7 @@ body {
 }
 
 .profile-cancel-button {
-  width: 300px;
+  width: 150px;
   padding: 8px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -324,6 +324,14 @@ body {
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+
+.profile-edit-input {
+  width: 150px;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: normal;
+  margin-top: 1rem;
 }
 
 .main-balance {
