@@ -9,7 +9,8 @@ const Navbar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isUserPage = location.pathname === "/profile";
+  const isUserPage =
+    location.pathname === "/profile" || location.pathname === "/transactions";
   const firstName = useSelector((state) => state.profile.firstName);
 
   const handleClick = () => {

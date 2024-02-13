@@ -93,11 +93,11 @@ const User = () => {
                 />
               </div>
               <div className="profile-edit-zone">
-                <button className="profile-button save" onClick={saveEdit}>
+                <button className="profile-edit-button save" onClick={saveEdit}>
                   Save
                 </button>
                 <button
-                  className="profile-cancel-button cancel"
+                  className="profile-edit-button cancel"
                   onClick={cancelEdit}
                 >
                   Cancel
@@ -111,7 +111,7 @@ const User = () => {
             <p className="profile-welcome">
               {firstName} {lastName}!
             </p>
-            <button className="profile-button" onClick={startEdit}>
+            <button className="transaction-button" onClick={startEdit}>
               Edit Name
             </button>
           </div>

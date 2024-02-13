@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../styles/index.css";
 
 const Transaction = (props) => {
@@ -9,7 +10,9 @@ const Transaction = (props) => {
         <p className="account-amount-description">{props.description}</p>
       </div>
       <div className="account-content-wrapper cta">
-        <button className="transaction-button">View transactions</button>
+        <Link to="/transactions" className="transaction-button">
+          View transactions
+        </Link>
       </div>
     </section>
   );
