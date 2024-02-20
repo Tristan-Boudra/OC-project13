@@ -13,6 +13,11 @@ import {
 import Transaction from "../../components/transaction";
 import "../../styles/index.css";
 
+/**
+ * Composant User.
+ * Ce composant représente la page du profil utilisateur.
+ * @returns {JSX.Element} L'élément de la page du profil utilisateur.
+ */
 const User = () => {
   const dispatch = useDispatch();
   const [getUserProfile] = useGetUserProfileMutation();
@@ -21,14 +26,23 @@ const User = () => {
   const lastName = useSelector((state) => state.profile.lastName);
   const [editMode, setEditMode] = useState(false);
 
+  /**
+   * Active le mode édition du nom d'utilisateur.
+   */
   const startEdit = () => {
     setEditMode(true);
   };
 
+  /**
+   * Annule le mode édition du nom d'utilisateur.
+   */
   const cancelEdit = () => {
     setEditMode(false);
   };
 
+  /**
+   * Enregistre les modifications apportées au nom d'utilisateur.
+   */
   const saveEdit = () => {
     const firstNameInput = document.getElementById("firstNameInput");
     const lastNameInput = document.getElementById("lastNameInput");
@@ -51,7 +65,10 @@ const User = () => {
         setEditMode(false);
       })
       .catch((error) => {
-        console.error("User profile update failed: ", error);
+        console.error(
+          "La mise à jour du profil utilisateur a échoué : ",
+          error
+        );
       });
   };
 

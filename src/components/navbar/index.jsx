@@ -1,18 +1,25 @@
 import "../../styles/index.css";
 import iconNavLogo from "../../assets/image/argentBankLogo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetLoginInfo } from "../../slices/signInSlice";
 import { resetProfileInfo } from "../../slices/profileSlice";
 
+/**
+ * Composant Navbar.
+ * Ce composant représente la barre de navigation de l'application.
+ * @returns {JSX.Element} L'élément de barre de navigation.
+ */
 const Navbar = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
-
-  const isUserPage =
-    location.pathname === "/profile" || location.pathname === "/transactions";
+  const token = localStorage.getItem("token");
+  const isAuthenticated = !!token;
   const firstName = useSelector((state) => state.profile.firstName);
 
+  /**
+   * Gère le clic sur le bouton de déconnexion.
+   * Réinitialise les informations de connexion et de profil, et supprime le jeton d'authentification du stockage local.
+   */
   const handleClick = () => {
     dispatch(resetLoginInfo());
     dispatch(resetProfileInfo());
@@ -30,9 +37,9 @@ const Navbar = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>
-        {isUserPage ? (
+        {isAuthenticated ? (
           <div>
-            <Link className="main-nav-item" to="/login">
+            <Link className="main-nav-item" to="/profile">
               <i className="fas fa-user-circle"></i>
               {firstName}
             </Link>

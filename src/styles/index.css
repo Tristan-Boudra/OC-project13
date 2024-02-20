@@ -339,7 +339,7 @@ body {
 
 .body-transactions {
   background-color: #e0e6ed;
-  height: 100vh;
+  padding-bottom: 50px;
 }
 
 .account-transactions {

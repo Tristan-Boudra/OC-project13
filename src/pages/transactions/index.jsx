@@ -1,6 +1,11 @@
 import Collapse from "../../components/collapse";
 import { useEffect } from "react";
 
+/**
+ * Composant Transactions.
+ * Ce composant représente la page des transactions de l'utilisateur.
+ * @returns {JSX.Element} L'élément de la page des transactions.
+ */
 const Transactions = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");

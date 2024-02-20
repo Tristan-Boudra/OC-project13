@@ -8,41 +8,50 @@ import {
 } from "../../slices/signInSlice";
 import { useLoginMutation } from "../../slices/apiSlice";
 
+/**
+ * Composant Login.
+ * Ce composant représente la page de connexion de l'application.
+ * @returns {JSX.Element} L'élément de page de connexion.
+ */
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
 
+  /**
+   * Gère la soumission du formulaire de connexion.
+   * @param {Event} e - L'événement de soumission du formulaire.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     const usernameInput = document.getElementById("username").value;
     const passwordInput = document.getElementById("password").value;
     const rememberMeCheckbox = document.getElementById("remember-me").checked;
 
-    // Store the input values in the Redux store
+    // Stocke les valeurs saisies dans le Redux store
     dispatch(setEmail(usernameInput));
     dispatch(setPassword(passwordInput));
     dispatch(setRememberMe(rememberMeCheckbox));
 
-    // Call the login mutation to authenticate the user and get the JWT token
+    // Appelle la mutation de connexion pour authentifier l'utilisateur et obtenir le jeton JWT
     login({ email: usernameInput, password: passwordInput })
       .unwrap()
       .then((data) => {
-        // Store the JWT token in the Redux store
+        // Stocke le jeton JWT dans le Redux store
         const jwtToken = data.body.token;
         dispatch(setAuthToken(jwtToken));
 
-        // Save the token in local storage to persist the user's login session
+        // Enregistre le jeton dans le stockage local pour persister la session de connexion de l'utilisateur
         localStorage.setItem("token", jwtToken);
 
-        // Reset the input fields after storing data in the Redux store
+        // Réinitialise les champs de saisie après avoir stocké les données dans le Redux store
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
 
         jwtToken && navigate("/profile");
       })
       .catch((error) => {
-        console.error("Login failed : ", error);
+        console.error("La connexion a échoué : ", error);
       });
   };
 

@@ -7,6 +7,11 @@ import Error from "../pages/error";
 import "../styles/index.css";
 import Transactions from "../pages/transactions";
 
+/**
+ * Composant racine de l'application.
+ * Ce composant gère le routage des différentes pages de l'application.
+ * @returns {JSX.Element} L'élément racine de l'application.
+ */
 export default function App() {
   return (
     <Router>
