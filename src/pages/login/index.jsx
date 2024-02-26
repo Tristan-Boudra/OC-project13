@@ -7,6 +7,7 @@ import {
   setAuthToken,
 } from "../../slices/signInSlice";
 import { useLoginMutation } from "../../slices/apiSlice";
+import { useEffect } from "react";
 
 /**
  * Composant Login.
@@ -17,6 +18,13 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/profile");
+    }
+  }, [navigate]);
 
   /**
    * Gère la soumission du formulaire de connexion.
@@ -41,8 +49,9 @@ const Login = () => {
         const jwtToken = data.body.token;
         dispatch(setAuthToken(jwtToken));
 
-        // Enregistre le jeton dans le stockage local pour persister la session de connexion de l'utilisateur
-        localStorage.setItem("token", jwtToken);
+        rememberMeCheckbox
+          ? localStorage.setItem("token", jwtToken)
+          : sessionStorage.setItem("token", jwtToken);
 
         // Réinitialise les champs de saisie après avoir stocké les données dans le Redux store
         document.getElementById("username").value = "";

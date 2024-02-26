@@ -29,27 +29,36 @@ export const apiSlice = createApi({
      * @function getUserProfile
      */
     getUserProfile: builder.mutation({
-      query: () => ({
-        url: "/user/profile",
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }),
+      query: () => {
+        const token =
+          localStorage.getItem("token") || sessionStorage.getItem("token");
+        return {
+          url: "/user/profile",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
     }),
+
     /**
      * Mutation pour mettre à jour le profil de l'utilisateur.
      * @function updateUserProfile
      */
     updateUserProfile: builder.mutation({
-      query: (body) => ({
-        url: "/user/profile",
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body,
-      }),
+      query: (body) => {
+        const token =
+          localStorage.getItem("token") || sessionStorage.getItem("token");
+        return {
+          url: "/user/profile",
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body,
+        };
+      },
     }),
   }),
 });

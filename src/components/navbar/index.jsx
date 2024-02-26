@@ -12,7 +12,8 @@ import { resetProfileInfo } from "../../slices/profileSlice";
  */
 const Navbar = () => {
   const dispatch = useDispatch();
-  const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
   const isAuthenticated = !!token;
   const firstName = useSelector((state) => state.profile.firstName);
 
@@ -24,6 +25,7 @@ const Navbar = () => {
     dispatch(resetLoginInfo());
     dispatch(resetProfileInfo());
     localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
   };
 
   return (
