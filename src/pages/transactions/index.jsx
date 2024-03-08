@@ -8,7 +8,8 @@ import { useEffect } from "react";
  */
 const Transactions = () => {
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
     if (!token) {
       window.location.href = "/error";
     }
