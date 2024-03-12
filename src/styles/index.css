@@ -127,17 +127,22 @@ body {
   .hero-content .text {
     font-size: 1.2rem;
   }
+
+  .features {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-nav-all {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .features {
   display: flex;
   flex-direction: column;
-}
-
-@media (min-width: 920px) {
-  .features {
-    flex-direction: row;
-  }
 }
 
 .feature-icon {
@@ -190,6 +195,11 @@ body {
 
 .input-remember label {
   margin-left: 0.25rem;
+}
+
+#error {
+  color: red;
+  display: none;
 }
 
 .input-wrapper {
@@ -271,7 +281,6 @@ body {
 
 .transaction-button {
   display: flex;
-  width: 100%;
   padding: 8px;
   font-size: 1.1rem;
   font-weight: bold;

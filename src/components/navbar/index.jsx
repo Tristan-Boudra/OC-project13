@@ -40,7 +40,7 @@ const Navbar = () => {
       </Link>
       <div>
         {isAuthenticated ? (
-          <div>
+          <div className="main-nav-all">
             <Link className="main-nav-item" to="/profile">
               <i className="fas fa-user-circle"></i>
               {firstName}

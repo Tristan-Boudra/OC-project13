@@ -60,6 +60,8 @@ const Login = () => {
         jwtToken && navigate("/profile");
       })
       .catch((error) => {
+        const errorMessage = document.getElementById("error");
+        errorMessage.style.display = "block";
         console.error("La connexion a échoué : ", error);
       });
   };
@@ -83,6 +85,7 @@ const Login = () => {
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
+            <p id="error">Connection failed !</p>
             <Link
               to="/profile"
               className="sign-in-button"
