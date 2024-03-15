@@ -1,23 +1,25 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   setEmail,
   setPassword,
   setRememberMe,
   setAuthToken,
+  setError,
 } from "../../slices/signInSlice";
 import { useLoginMutation } from "../../slices/apiSlice";
 import { useEffect } from "react";
 
 /**
- * Composant Login.
- * Ce composant représente la page de connexion de l'application.
- * @returns {JSX.Element} L'élément de page de connexion.
+ * Login component.
+ * This component represents the application login page.
+ * @returns {JSX.Element} The login page element.
  */
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+  const error = useSelector((state) => state.signIn.error);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,8 +29,8 @@ const Login = () => {
   }, [navigate]);
 
   /**
-   * Gère la soumission du formulaire de connexion.
-   * @param {Event} e - L'événement de soumission du formulaire.
+   * Handles login form submission.
+   * @param {Event} e - The form submission event.
    */
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,64 +38,60 @@ const Login = () => {
     const passwordInput = document.getElementById("password").value;
     const rememberMeCheckbox = document.getElementById("remember-me").checked;
 
-    // Stocke les valeurs saisies dans le Redux store
+    // Stores the values ​​entered in the Redux store
     dispatch(setEmail(usernameInput));
     dispatch(setPassword(passwordInput));
     dispatch(setRememberMe(rememberMeCheckbox));
 
-    // Appelle la mutation de connexion pour authentifier l'utilisateur et obtenir le jeton JWT
+    // Call the login mutation to authenticate the user and obtain the JWT token
     login({ email: usernameInput, password: passwordInput })
       .unwrap()
       .then((data) => {
-        // Stocke le jeton JWT dans le Redux store
         const jwtToken = data.body.token;
-        dispatch(setAuthToken(jwtToken));
+        !rememberMeCheckbox
+          ? dispatch(setAuthToken(jwtToken))
+          : localStorage.setItem("token", jwtToken);
 
-        rememberMeCheckbox
-          ? localStorage.setItem("token", jwtToken)
-          : sessionStorage.setItem("token", jwtToken);
-
-        // Réinitialise les champs de saisie après avoir stocké les données dans le Redux store
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
 
         jwtToken && navigate("/profile");
       })
       .catch((error) => {
-        const errorMessage = document.getElementById("error");
-        errorMessage.style.display = "block";
+        dispatch(setError(true));
         console.error("La connexion a échoué : ", error);
       });
   };
-
   return (
     <>
       <main className="main bg-dark">
         <section className="sign-in-content">
-          <i className="fas fa-user-circle"></i>
-          <h1>Sign In</h1>
-          <form>
-            <div className="input-wrapper">
-              <label htmlFor="username">Username</label>
-              <input type="text" id="username" />
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" />
-            </div>
-            <div className="input-remember">
-              <input type="checkbox" id="remember-me" />
-              <label htmlFor="remember-me">Remember me</label>
-            </div>
-            <p id="error">Connection failed !</p>
-            <Link
-              to="/profile"
-              className="sign-in-button"
-              onClick={handleSubmit}
-            >
-              Sign In
-            </Link>
-          </form>
+          <div className="sign-in-form">
+            <i className="fas fa-user-circle"></i>
+            <h1>Sign In</h1>
+            <form>
+              <div className="input-wrapper">
+                <label htmlFor="username">Username</label>
+                <input type="text" id="username" />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" />
+              </div>
+              <div className="input-remember">
+                <input type="checkbox" id="remember-me" />
+                <label htmlFor="remember-me">Remember me</label>
+              </div>
+              {error && <p id="error">Connection failed !</p>}
+              <Link
+                to="/profile"
+                className="sign-in-button"
+                onClick={handleSubmit}
+              >
+                Sign In
+              </Link>
+            </form>
+          </div>
         </section>
       </main>
     </>

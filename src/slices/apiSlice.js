@@ -1,20 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 /**
- * Module d'API pour gérer les requêtes liées à l'utilisateur.
- * @module apiSlice
- */
-
-/**
- * API utilisateur pour la gestion de l'authentification et du profil.
- * @type {Object}
+ * User API for authentication and profile management.
+ * @type{Object}
  */
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/v1" }),
   endpoints: (builder) => ({
     /**
-     * Mutation pour l'authentification de l'utilisateur.
+     * Mutation for user authentication.
      * @function login
      */
     login: builder.mutation({
@@ -25,13 +20,11 @@ export const apiSlice = createApi({
       }),
     }),
     /**
-     * Mutation pour récupérer le profil de l'utilisateur.
+     * Mutation to retrieve user profile.
      * @function getUserProfile
      */
     getUserProfile: builder.mutation({
-      query: () => {
-        const token =
-          localStorage.getItem("token") || sessionStorage.getItem("token");
+      query: (token) => {
         return {
           url: "/user/profile",
           method: "POST",
@@ -43,13 +36,11 @@ export const apiSlice = createApi({
     }),
 
     /**
-     * Mutation pour mettre à jour le profil de l'utilisateur.
+     * Mutation to update user profile.
      * @function updateUserProfile
      */
     updateUserProfile: builder.mutation({
-      query: (body) => {
-        const token =
-          localStorage.getItem("token") || sessionStorage.getItem("token");
+      query: ({ body, token }) => {
         return {
           url: "/user/profile",
           method: "PUT",
@@ -64,8 +55,8 @@ export const apiSlice = createApi({
 });
 
 /**
- * Hooks personnalisés pour utiliser les mutations définies dans l'API.
- * @type {Object}
+ * Custom hooks to use mutations defined in the API.
+ * @type{Object}
  */
 export const {
   useLoginMutation,

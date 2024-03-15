@@ -1,19 +1,24 @@
+import { useDispatch, useSelector } from "react-redux";
 import Collapse from "../../components/collapse";
 import { useEffect } from "react";
 
 /**
- * Composant Transactions.
- * Ce composant représente la page des transactions de l'utilisateur.
- * @returns {JSX.Element} L'élément de la page des transactions.
+ * Transactions component.
+ * This component represents the user's transactions page.
+ * @returns {JSX.Element} The transaction page element.
  */
 const Transactions = () => {
+  const dispatch = useDispatch();
+  const authToken = useSelector((state) => state.signIn.authToken);
+  const isLoading = useSelector((state) => state.profile.isLoading);
   useEffect(() => {
-    const token =
-      localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = localStorage.getItem("token") || authToken;
     if (!token) {
-      window.location.href = "/error";
+      setTimeout(() => {
+        window.location.href = "/error";
+      }, 1000);
     }
-  }, []);
+  }, [authToken, dispatch]);
 
   const dataTransaction = [
     {
@@ -47,6 +52,10 @@ const Transactions = () => {
       balance: "$2181.79",
     },
   ];
+
+  if (isLoading) {
+    return <div id="loading">Data is loading ...</div>;
+  }
 
   return (
     <div className="body-transactions">

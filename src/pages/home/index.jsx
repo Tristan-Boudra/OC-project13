@@ -5,9 +5,9 @@ import iconSecurity from "../../assets/image/icon-security.png";
 import imgHero from "../../assets/image/bank-tree.jpeg";
 
 /**
- * Composant Home.
- * Ce composant représente la page d'accueil de l'application.
- * @returns {JSX.Element} L'élément de la page d'accueil.
+ * Home component.
+ * This component represents the home page of the application.
+ * @returns {JSX.Element} The home page element.
  */
 const Home = () => {
   return (

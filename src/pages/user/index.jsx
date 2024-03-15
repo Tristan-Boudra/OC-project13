@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetUserProfileMutation,
@@ -9,14 +9,17 @@ import {
   setEmail,
   setFirstName,
   setLastName,
+  setIsLoading,
+  setError,
+  setEditMode,
 } from "../../slices/profileSlice";
 import Transaction from "../../components/transaction";
 import "../../styles/index.css";
 
 /**
- * Composant User.
- * Ce composant représente la page du profil utilisateur.
- * @returns {JSX.Element} L'élément de la page du profil utilisateur.
+ * User component.
+ * This component represents the user profile page.
+ * @returns {JSX.Element} The user profile page element.
  */
 const User = () => {
   const dispatch = useDispatch();
@@ -24,25 +27,45 @@ const User = () => {
   const [updateUserProfile] = useUpdateUserProfileMutation();
   const firstName = useSelector((state) => state.profile.firstName);
   const lastName = useSelector((state) => state.profile.lastName);
-  const [editMode, setEditMode] = useState(false);
+  const authToken = useSelector((state) => state.signIn.authToken);
+  const isLoading = useSelector((state) => state.profile.isLoading);
+  const editMode = useSelector((state) => state.profile.editMode);
+  const error = useSelector((state) => state.profile.error);
+  const localToken = localStorage.getItem("token");
+  const token = authToken || localToken;
 
-  /**
-   * Active le mode édition du nom d'utilisateur.
-   */
+  useEffect(() => {
+    getUserProfile(token)
+      .unwrap()
+      .then((data) => {
+        dispatch(setId(data.body.id));
+        dispatch(setEmail(data.body.email));
+        dispatch(setFirstName(data.body.firstName));
+        dispatch(setLastName(data.body.lastName));
+        setTimeout(() => {
+          dispatch(setIsLoading(false));
+        }, 1000);
+      })
+      .catch(() => {
+        setTimeout(() => {
+          window.location.href = "/error";
+        }, 1000);
+      });
+  }, [dispatch, getUserProfile, token]);
+
   const startEdit = () => {
-    setEditMode(true);
+    dispatch(setEditMode(true));
   };
 
-  /**
-   * Annule le mode édition du nom d'utilisateur.
-   */
   const cancelEdit = () => {
-    setEditMode(false);
+    dispatch(setEditMode(false));
   };
 
-  /**
-   * Enregistre les modifications apportées au nom d'utilisateur.
-   */
+  const validateInput = (input) => {
+    const regex = /^[a-zA-ZÀ-ÿ-' ]+$/;
+    return regex.test(input);
+  };
+
   const saveEdit = () => {
     const firstNameInput = document.getElementById("firstNameInput");
     const lastNameInput = document.getElementById("lastNameInput");
@@ -52,39 +75,32 @@ const User = () => {
     const newLastName =
       lastNameInput.value.trim() !== "" ? lastNameInput.value : lastName;
 
+    if (!validateInput(newFirstName) || !validateInput(newLastName)) {
+      dispatch(setError(true));
+      return;
+    }
+
     const body = {
       firstName: newFirstName,
       lastName: newLastName,
     };
 
-    updateUserProfile(body)
+    updateUserProfile({ body, token })
       .unwrap()
       .then((data) => {
         dispatch(setFirstName(data.body.firstName));
         dispatch(setLastName(data.body.lastName));
-        setEditMode(false);
+        dispatch(setEditMode(false));
+        dispatch(setError(false));
       })
       .catch((error) => {
-        console.error(
-          "La mise à jour du profil utilisateur a échoué : ",
-          error
-        );
+        dispatch(setError(true));
       });
   };
 
-  useEffect(() => {
-    getUserProfile()
-      .unwrap()
-      .then((data) => {
-        dispatch(setId(data.body.id));
-        dispatch(setEmail(data.body.email));
-        dispatch(setFirstName(data.body.firstName));
-        dispatch(setLastName(data.body.lastName));
-      })
-      .catch(() => {
-        window.location.href = "/error";
-      });
-  }, [dispatch, getUserProfile]);
+  if (isLoading) {
+    return <div id="loading">Data is loading ...</div>;
+  }
 
   return (
     <>
@@ -109,16 +125,22 @@ const User = () => {
                   placeholder={lastName}
                 />
               </div>
-              <div className="profile-edit-zone">
-                <button className="profile-edit-button save" onClick={saveEdit}>
-                  Save
-                </button>
-                <button
-                  className="profile-edit-button cancel"
-                  onClick={cancelEdit}
-                >
-                  Cancel
-                </button>
+              <div className="profile-edit-zone-button">
+                <div>{error && <p id="error">An error has occurred !</p>}</div>
+                <div className="profile-edit-buttons">
+                  <button
+                    className="profile-edit-button save"
+                    onClick={saveEdit}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="profile-edit-button cancel"
+                    onClick={cancelEdit}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           </div>

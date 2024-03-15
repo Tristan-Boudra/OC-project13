@@ -1,14 +1,14 @@
 import "../../styles/index.css";
 
 /**
- * Composant Footer.
- * Ce composant affiche le pied de page de l'application.
- * @returns {JSX.Element} L'élément de pied de page.
+ * Footer component.
+ * This component displays the application footer.
+ * @returns {JSX.Element} The footer element.
  */
 const Footer = () => {
   return (
     <footer className="footer">
-      <p className="footer-text">Copyright 2020 Argent Bank</p>
+      <p className="footer-text">Copyright 2024 Argent Bank</p>
     </footer>
   );
 };

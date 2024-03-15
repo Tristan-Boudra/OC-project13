@@ -21,7 +21,9 @@ body {
 
 .bg-dark {
   background-color: #e0e6ed;
-  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sr-only {
@@ -166,7 +168,6 @@ body {
 
 .sign-in-button {
   display: block;
-  width: 100%;
   padding: 8px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -178,10 +179,16 @@ body {
 
 .sign-in-content {
   box-sizing: border-box;
+  margin-top: 30px;
+  height: 80vh;
+}
+
+.sign-in-form {
+  display: flex;
+  flex-direction: column;
   background-color: white;
-  width: 300px;
+  width: max-content;
   margin: 0 auto;
-  margin-top: 3rem;
   padding: 2rem;
 }
 
@@ -199,7 +206,6 @@ body {
 
 #error {
   color: red;
-  display: none;
 }
 
 .input-wrapper {
@@ -336,6 +342,21 @@ body {
   gap: 10px;
 }
 
+.profile-edit-zone-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.profile-edit-buttons {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
 .profile-edit-input {
   width: 150px;
   padding: 8px;
@@ -346,6 +367,14 @@ body {
 
 .main-balance {
   margin-top: 30px;
+  width: 100%;
+}
+
+#loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
 /* Pages Transactions */

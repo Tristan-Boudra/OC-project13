@@ -4,34 +4,34 @@ import profileReducer from "../slices/profileSlice";
 import { apiSlice } from "../slices/apiSlice";
 
 /**
- * Configurer et créer le store Redux pour l'application.
+ * Configure and create the Redux store for the application.
  * @function configureAppStore
- * @returns {Object} - Le store Redux configuré.
+ * @returns {Object} - The configured Redux store.
  */
 export default configureStore({
   /**
-   * Reducers du store.
+   * Store reducers.
    * @type {Object}
    */
   reducer: {
     /**
-     * Reducer pour gérer les informations de connexion de l'utilisateur.
+     * Reducer to manage user sign-in information.
      * @type {Function}
      */
     signIn: signInReducer,
     /**
-     * Reducer pour gérer les informations de profil de l'utilisateur.
+     * Reducer to manage user profile information.
      * @type {Function}
      */
     profile: profileReducer,
     /**
-     * Reducer pour gérer les requêtes API.
+     * Reducer to manage API requests.
      * @type {Function}
      */
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   /**
-   * Middleware personnalisé pour le store.
+   * Custom middleware for the store.
    * @type {Function}
    */
   middleware: (getDefaultMiddleware) =>

@@ -8,9 +8,9 @@ import "../styles/index.css";
 import Transactions from "../pages/transactions";
 
 /**
- * Composant racine de l'application.
- * Ce composant gère le routage des différentes pages de l'application.
- * @returns {JSX.Element} L'élément racine de l'application.
+ * Root component of the application.
+ * This component manages the routing of the different pages of the application.
+ * @returns {JSX.Element} The root element of the application.
  */
 export default function App() {
   return (
