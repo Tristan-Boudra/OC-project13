@@ -126,7 +126,13 @@ const User = () => {
                 />
               </div>
               <div className="profile-edit-zone-button">
-                <div>{error && <p id="error">An error has occurred !</p>}</div>
+                <div>
+                  {error && (
+                    <p id="error">
+                      Some characters in user fields are incorrect
+                    </p>
+                  )}
+                </div>
                 <div className="profile-edit-buttons">
                   <button
                     className="profile-edit-button save"

@@ -296,6 +296,7 @@ body {
   border-radius: 5px;
   justify-content: center;
   text-decoration: none;
+  cursor: pointer;
 }
 
 @media (min-width: 720px) {
@@ -334,6 +335,7 @@ body {
   background-color: #fff;
   border-color: #b3b3f0;
   color: #786bf6;
+  cursor: pointer;
 }
 
 .profile-edit-zone {
